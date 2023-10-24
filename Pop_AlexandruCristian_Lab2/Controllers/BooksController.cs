@@ -23,7 +23,7 @@ namespace Pop_AlexandruCristian_Lab2.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.Books != null ? 
-                          View(await _context.Books.ToListAsync()) :
+                          View(await _context.Books.Include(b=>b.Author).ToListAsync()) :
                           Problem("Entity set 'LibraryContext.Books'  is null.");
         }
 
@@ -48,6 +48,7 @@ namespace Pop_AlexandruCristian_Lab2.Controllers
         // GET: Books/Create
         public IActionResult Create()
         {
+            ViewData["AuthorID"] = new SelectList(_context.Authors, "ID", "FirstName");
             return View();
         }
 
