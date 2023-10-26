@@ -62,7 +62,7 @@ namespace Pop_AlexandruCristian_Lab2.Controllers
                     break;
             }
             int pageSize = 2;
-            return View(await PaginatedList<Book>.CreateAsync(books.AsNoTracking(), pageNumber ??
+            return View(await PaginatedList<Book>.CreateAsync(books.Include(i=>i.Author).AsNoTracking(), pageNumber ??
            1, pageSize));
         }
         // GET: Books/Details/5

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Pop_AlexandruCristian_Lab2.Data;
 
@@ -11,9 +12,11 @@ using Pop_AlexandruCristian_Lab2.Data;
 namespace Pop_AlexandruCristian_Lab2.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20231026161915_Order")]
+    partial class Order
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,7 +58,7 @@ namespace Pop_AlexandruCristian_Lab2.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(6, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -118,44 +121,6 @@ namespace Pop_AlexandruCristian_Lab2.Migrations
                     b.ToTable("Order", (string)null);
                 });
 
-            modelBuilder.Entity("Pop_AlexandruCristian_Lab2.Models.PublishedBook", b =>
-                {
-                    b.Property<int>("BookID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PublisherID")
-                        .HasColumnType("int");
-
-                    b.HasKey("BookID", "PublisherID");
-
-                    b.HasIndex("PublisherID");
-
-                    b.ToTable("PublishedBook", (string)null);
-                });
-
-            modelBuilder.Entity("Pop_AlexandruCristian_Lab2.Models.Publisher", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("Adress")
-                        .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("nvarchar(70)");
-
-                    b.Property<string>("PublisherName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Publisher", (string)null);
-                });
-
             modelBuilder.Entity("Pop_AlexandruCristian_Lab2.Models.Book", b =>
                 {
                     b.HasOne("Pop_AlexandruCristian_Lab2.Models.Author", "Author")
@@ -186,25 +151,6 @@ namespace Pop_AlexandruCristian_Lab2.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("Pop_AlexandruCristian_Lab2.Models.PublishedBook", b =>
-                {
-                    b.HasOne("Pop_AlexandruCristian_Lab2.Models.Book", "Book")
-                        .WithMany("PublishedBooks")
-                        .HasForeignKey("BookID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Pop_AlexandruCristian_Lab2.Models.Publisher", "Publisher")
-                        .WithMany("PublishedBooks")
-                        .HasForeignKey("PublisherID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Publisher");
-                });
-
             modelBuilder.Entity("Pop_AlexandruCristian_Lab2.Models.Author", b =>
                 {
                     b.Navigation("Books");
@@ -213,18 +159,11 @@ namespace Pop_AlexandruCristian_Lab2.Migrations
             modelBuilder.Entity("Pop_AlexandruCristian_Lab2.Models.Book", b =>
                 {
                     b.Navigation("Orders");
-
-                    b.Navigation("PublishedBooks");
                 });
 
             modelBuilder.Entity("Pop_AlexandruCristian_Lab2.Models.Customer", b =>
                 {
                     b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("Pop_AlexandruCristian_Lab2.Models.Publisher", b =>
-                {
-                    b.Navigation("PublishedBooks");
                 });
 #pragma warning restore 612, 618
         }
